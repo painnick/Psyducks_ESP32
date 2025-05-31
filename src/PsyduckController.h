@@ -6,6 +6,7 @@
 #define PSYDUCK_ESP32_SRC_PSYDUCKCONTROLLER_H_
 
 #define SUPPRESS_HPP_WARNING
+
 #include <ServoEasing.h>
 
 class PsyduckController {
@@ -17,9 +18,14 @@ class PsyduckController {
 
  public:
   PsyduckController(int servoPin_, int motorCh1_, int motorCh2_);
-  void headMove(const uint32_t duty) const;
-  void headMove1(const uint32_t duty) const;
-  void headMove2(const uint32_t duty) const;
+
+  void headMove(uint32_t duty) const;
+
+  void headMove1(uint32_t duty) const;
+
+  void headMove2(uint32_t duty) const;
+
+  void changeDirection() { isMotor1 = !isMotor1; };
 };
 
 
