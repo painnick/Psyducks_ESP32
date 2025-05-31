@@ -22,7 +22,7 @@
 #define CH_MOTOR3A 5
 #define CH_MOTOR3B 6
 
-#define FREQ_MOTOR 40000000
+#define FREQ_MOTOR 4000
 
 #define PIN_LED1 13
 #define PIN_LED2 27
