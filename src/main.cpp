@@ -19,31 +19,31 @@ PsyduckController *duck1, *duck2, *duck3;
 void setup() {
   ESP_LOGI(MAIN_TAG, "Setup Table-servo");
 
-  ledcSetup(CH_MOTOR1A, 1000, 8);
+  ledcSetup(CH_MOTOR1A, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR1A, CH_MOTOR1A);
   ledcWrite(CH_MOTOR1A, 0);
 
-  ledcSetup(CH_MOTOR1B, 1000, 8);
+  ledcSetup(CH_MOTOR1B, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR1B, CH_MOTOR1B);
   ledcWrite(CH_MOTOR1B, 0);
 
-  ledcSetup(CH_MOTOR2A, 1000, 8);
+  ledcSetup(CH_MOTOR2A, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR2A, CH_MOTOR2A);
   ledcWrite(CH_MOTOR2A, 0);
 
-  ledcSetup(CH_MOTOR2B, 1000, 8);
+  ledcSetup(CH_MOTOR2B, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR2B, CH_MOTOR2B);
   ledcWrite(CH_MOTOR2B, 0);
 
-  ledcSetup(CH_MOTOR3A, 1000, 8);
+  ledcSetup(CH_MOTOR3A, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR3A, CH_MOTOR3A);
   ledcWrite(CH_MOTOR3A, 0);
 
-  ledcSetup(CH_MOTOR3B, 1000, 8);
+  ledcSetup(CH_MOTOR3B, FREQ_MOTOR, 8);
   ledcAttachPin(PIN_MOTOR3B, CH_MOTOR3B);
   ledcWrite(CH_MOTOR3B, 0);
 
-  ledcSetup(CH_LEDS, 1000, 8);
+  ledcSetup(CH_LEDS, 5000, 8);
   ledcAttachPin(PIN_LED1, CH_LEDS);
   ledcAttachPin(PIN_LED2, CH_LEDS);
   ledcAttachPin(PIN_LED3, CH_LEDS);
