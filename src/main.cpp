@@ -70,6 +70,10 @@ void loop() {
     linearValue = 0; // 0 입력은 로그 정의 안됨
   }
 
+  duck1->headMove(32 * linearValue);
+  duck2->headMove(32 * linearValue);
+  duck3->headMove(32 * linearValue);
+
   ledcWrite(CH_LEDS, (linearValue > 11.5f) ? 192 : 0);
 
   ESP_LOGD(MAIN_TAG, "Volume %4d(%-3.2f)", volume, linearValue);

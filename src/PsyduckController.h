@@ -11,11 +11,13 @@
 class PsyduckController {
   int servoPin;
   int motorCh1, motorCh2;
+  bool isMotor1;
 
   ServoEasing servo;
 
  public:
   PsyduckController(int servoPin_, int motorCh1_, int motorCh2_);
+  void headMove(const uint32_t duty) const;
   void headMove1(const uint32_t duty) const;
   void headMove2(const uint32_t duty) const;
 };

@@ -30,7 +30,8 @@ void ServoTargetPositionReachedHandler(ServoEasing *aServoEasingInstance) {
 
 PsyduckController::PsyduckController(int servoPin_, int motorCh1_, int motorCh2_) : servoPin(servoPin_),
                                                                                     motorCh1(motorCh1_),
-                                                                                    motorCh2(motorCh2_) {
+                                                                                    motorCh2(motorCh2_),
+                                                                                    isMotor1(true) {
   servo.attach(servoPin);
   servo.setSpeed(DEFAULT_SPEED);
 //  servo.setEasingType(EASE_ELASTIC_IN_OUT);
@@ -46,4 +47,11 @@ void PsyduckController::headMove1(const uint32_t duty) const {
 void PsyduckController::headMove2(const uint32_t duty) const {
   ledcWrite(motorCh1, duty);
   ledcWrite(motorCh2, 0);
+}
+
+void PsyduckController::headMove(const uint32_t duty) const {
+  if (isMotor1)
+    headMove1(duty);
+  else
+    headMove2(duty);
 }
