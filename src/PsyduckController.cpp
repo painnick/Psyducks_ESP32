@@ -1,37 +1,49 @@
 //
-// Created by painnick on 2025-04-20.
+// Created by painnick on 2025-05-31.
 //
+
 #include "PsyduckController.h"
 
-#define MAX_EASING_SERVOS 3
-#define ENABLE_EASE_CUBIC
+#define PSYDUCK_TAG "psyduck"
 
-#include "ServoEasing.hpp"
+constexpr int DEFAULT_SPEED = 5;
 
-PsyduckController::PsyduckController(const uint16_t pinLeft, const uint16_t pinRight, const uint16_t pinServo) {
-    pin_left = pinLeft;
-    pin_right = pinRight;
+#define SERVO_DEFAULT_DEGREE 90
+constexpr int SERVO_MIN_DEGREE = SERVO_DEFAULT_DEGREE - 45;
+constexpr int SERVO_MAX_DEGREE = SERVO_DEFAULT_DEGREE + 45;
 
-    ch_left = nextChannel++;
-    ch_right = nextChannel++;
+void ServoTargetPositionReachedHandler(ServoEasing *aServoEasingInstance) {
+  ESP_LOGD(PSYDUCK_TAG, "Servo[%d] Reached.", aServoEasingInstance->mServoIndex);
+  auto lastDegree = aServoEasingInstance->getCurrentAngle();
 
-    ledcSetup(ch_left, 2000, 10);
-    ledcSetup(ch_right, 2000, 10);
-
-    ledcAttachPin(pin_left, ch_left);
-    ledcAttachPin(pin_right, ch_right);
-
-    servo = new ServoEasing();
-    servo->attach(pinServo);
-    servo->setEasingType(EASE_CUBIC_OUT);
-};
-
-void PsyduckController::headMove(const uint32_t duty) const {
-    ledcWrite(ch_right, 0);
-    ledcWrite(ch_left, duty);
+  START:
+  auto degree = (int) random(SERVO_MIN_DEGREE, SERVO_MAX_DEGREE);
+  auto distance = lastDegree > degree ? lastDegree - degree : degree - lastDegree;
+  if (distance < 30) {
+    degree = lastDegree > degree ? lastDegree + 30 : lastDegree - 30;
+    if (degree > SERVO_MAX_DEGREE || degree < SERVO_MIN_DEGREE)
+      goto START;
+    distance = lastDegree > degree ? lastDegree - degree : degree - lastDegree;
+  }
+  aServoEasingInstance->startEaseTo(degree, DEFAULT_SPEED, START_UPDATE_BY_INTERRUPT);
 }
 
+PsyduckController::PsyduckController(int servoPin_, int motorCh1_, int motorCh2_) : servoPin(servoPin_),
+                                                                                    motorCh1(motorCh1_),
+                                                                                    motorCh2(motorCh2_) {
+  servo.attach(servoPin);
+  servo.setSpeed(DEFAULT_SPEED);
+//  servo.setEasingType(EASE_ELASTIC_IN_OUT);
+  servo.setTargetPositionReachedHandler(ServoTargetPositionReachedHandler);
+  servo.startEaseTo(SERVO_DEFAULT_DEGREE, DEFAULT_SPEED, START_UPDATE_BY_INTERRUPT);
+};
 
-void PsyduckController::tableMove(const int degree, const uint_fast16_t degreesPerSec) const {
-    servo->startEaseTo(degree, degreesPerSec);
+void PsyduckController::headMove1(const uint32_t duty) const {
+  ledcWrite(motorCh1, 0);
+  ledcWrite(motorCh2, duty);
+}
+
+void PsyduckController::headMove2(const uint32_t duty) const {
+  ledcWrite(motorCh1, duty);
+  ledcWrite(motorCh2, 0);
 }

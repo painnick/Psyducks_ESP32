@@ -1,30 +1,24 @@
 //
-// Created by painn on 2025-04-20.
+// Created by painnick on 2025-05-31.
 //
 
-#ifndef PSYDUCKCONTROLLER_H
-#define PSYDUCKCONTROLLER_H
+#ifndef PSYDUCK_ESP32_SRC_PSYDUCKCONTROLLER_H_
+#define PSYDUCK_ESP32_SRC_PSYDUCKCONTROLLER_H_
 
-#include "common.h"
-
-class ServoEasing;
+#define SUPPRESS_HPP_WARNING
+#include <ServoEasing.h>
 
 class PsyduckController {
-  uint8_t ch_left;
-  uint8_t pin_left;
-  uint8_t ch_right;
-  uint8_t pin_right;
+  int servoPin;
+  int motorCh1, motorCh2;
 
-  ServoEasing *servo;
+  ServoEasing servo;
 
-  public:
-    PsyduckController(uint16_t pinLeft, uint16_t pinRight, uint16_t pinServo);
-
-    void headMove(uint32_t duty) const;
-
-
-    void tableMove(int degree, uint_fast16_t degreesPerSec) const;
+ public:
+  PsyduckController(int servoPin_, int motorCh1_, int motorCh2_);
+  void headMove1(const uint32_t duty) const;
+  void headMove2(const uint32_t duty) const;
 };
 
 
-#endif //PSYDUCKCONTROLLER_H
+#endif //PSYDUCK_ESP32_SRC_PSYDUCKCONTROLLER_H_
